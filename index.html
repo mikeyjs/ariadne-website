@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ariadne Knowledge Works</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F5F0E8;
+      --ink: #1A1A1A;
+      --ink-light: #4A4A4A;
+      --accent: #C84B2F;
+      --accent-hover: #A03820;
+      --rule: #D8D0C4;
+      --font: 'Georgia', serif;
+      --sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --possible-icon-size: 104px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    /* ── NAV ── */
+    body > nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--cream);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .logo { height: 30px; width: auto; aspect-ratio: 1049 / 177; display: block; }
+
+    .footer-logo { height: 32px; width: auto; color: var(--cream); margin-bottom: 16px; }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--ink-light);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    .nav-cta {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 20px;
+      background: var(--accent);
+      color: #fff !important;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .nav-cta:hover { background: var(--accent-hover) !important; color: #fff; }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    section { padding: 100px 0; }
+    section + section { border-top: 1px solid var(--rule); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 120px 0 100px;
+    }
+
+    .hero-title {
+      max-width: 800px;
+      margin-bottom: 64px;
+    }
+
+    .hero-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      line-height: 1.1;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-art {
+      display: block;
+      width: 100%;
+      max-width: 440px;
+      mix-blend-mode: multiply;
+    }
+
+    .hero-right {
+      padding-top: 12px;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--ink-light);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .hero-sub + .hero-sub {
+      margin-top: -12px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 13px 28px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 3px;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn-primary:hover { background: var(--accent-hover); }
+
+    .btn-secondary {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--ink-light);
+      text-decoration: none;
+      margin-left: 24px;
+      padding-bottom: 2px;
+      border-bottom: 1px solid currentColor;
+      transition: color 0.2s;
+    }
+
+    .btn-secondary:hover { color: var(--ink); }
+
+    /* ── THREAD ── */
+    .thread-section {}
+
+    .section-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .thread-section h2 {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 28px;
+      max-width: 600px;
+    }
+
+    .thread-section p {
+      color: var(--ink-light);
+      max-width: 640px;
+      margin-bottom: 20px;
+    }
+
+    /* ── WHAT BECOMES POSSIBLE ── */
+    .possible-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px 56px;
+      margin-top: 56px;
+    }
+
+    .possible-item {}
+
+    .possible-icon {
+      height: var(--possible-icon-size);
+      margin-bottom: 16px;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+    }
+
+    .possible-item h3 {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .possible-item p {
+      font-size: 15px;
+      color: var(--ink-light);
+      line-height: 1.6;
+    }
+
+    /* ── WHAT WE BUILD ── */
+    .services-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 48px;
+      font-size: 16px;
+    }
+
+    .services-table th {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-align: left;
+      padding: 12px 0;
+      border-bottom: 2px solid var(--rule);
+    }
+
+    .services-table td {
+      padding: 22px 0;
+      border-bottom: 1px solid var(--rule);
+      vertical-align: top;
+    }
+
+    .services-table td:first-child {
+      font-weight: 600;
+      font-family: var(--sans);
+      font-size: 15px;
+      width: 38%;
+      padding-right: 40px;
+    }
+
+    .services-table td:last-child {
+      color: var(--ink-light);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .services-note {
+      margin-top: 32px;
+      font-size: 14px;
+      color: var(--ink-light);
+      font-family: var(--sans);
+      border-left: 3px solid var(--accent);
+      padding-left: 20px;
+      line-height: 1.6;
+    }
+
+    /* ── HOW WE WORK ── */
+    .modes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      margin-top: 56px;
+    }
+
+    .mode-item {}
+
+    .mode-icon {
+      height: var(--possible-icon-size);
+      max-width: 100%;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .mode-num {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .mode-item h3 {
+      font-family: var(--sans);
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+
+    .mode-item p {
+      font-size: 15px;
+      color: var(--ink-light);
+      line-height: 1.65;
+    }
+
+    /* ── WHO WE WORK WITH ── */
+    .who-section { padding: 64px 0; background: #EFE8DC; }
+
+    .who-disclosure { border-top: 1px solid var(--rule); }
+
+    .who-disclosure summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 32px;
+      padding: 28px 0 4px;
+    }
+
+    .who-disclosure summary::-webkit-details-marker { display: none; }
+
+    .who-summary-text {
+      font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+      font-weight: 400;
+      line-height: 1.3;
+      max-width: 760px;
+    }
+
+    .who-toggle {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      position: relative;
+      margin-top: 6px;
+    }
+
+    .who-toggle::before,
+    .who-toggle::after {
+      content: "";
+      position: absolute;
+      background: var(--accent);
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .who-toggle::before { top: 15px; left: 6px; width: 20px; height: 2px; }
+    .who-toggle::after { left: 15px; top: 6px; width: 2px; height: 20px; }
+
+    .who-disclosure[open] .who-toggle::after { opacity: 0; transform: rotate(90deg); }
+
+    .who-detail { max-width: 760px; padding: 16px 0 24px; }
+
+    .who-detail p {
+      color: var(--ink-light);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .who-detail p:last-child { margin-bottom: 0; }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--ink);
+      color: var(--cream);
+      text-align: center;
+      padding: 100px 40px;
+      border-top: none;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .cta-section h2 em {
+      font-style: italic;
+      color: #E8755A;
+    }
+
+    .cta-section p {
+      font-size: 1.05rem;
+      color: rgba(245,240,232,0.65);
+      max-width: 520px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .cta-section .btn-primary {
+      background: var(--accent);
+      font-size: 15px;
+      padding: 15px 36px;
+    }
+
+    .cta-section .btn-primary:hover { background: var(--accent-hover); }
+
+    .cta-section .btn-secondary {
+      color: rgba(245,240,232,0.6);
+      border-color: rgba(245,240,232,0.3);
+      margin-left: 28px;
+    }
+
+    .cta-section .btn-secondary:hover { color: var(--cream); border-color: var(--cream); }
+
+    /* ── CONTACT FORM ── */
+    .contact-form {
+      margin: 56px auto 0;
+      max-width: 540px;
+      text-align: left;
+    }
+
+    .contact-form h3 {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: rgba(245,240,232,0.5);
+      text-align: center;
+      margin-bottom: 28px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+    }
+
+    .contact-form .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .contact-form label {
+      display: block;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.45);
+      margin-bottom: 6px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px;
+      color: var(--cream);
+      font-family: var(--font);
+      font-size: 1rem;
+      padding: 12px 14px;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: rgba(200,75,47,0.7);
+    }
+
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .contact-form .form-field { margin-bottom: 16px; }
+
+    .contact-form .cf-turnstile {
+      margin: 20px 0;
+    }
+
+    .contact-form .form-submit {
+      width: 100%;
+      background: var(--accent);
+      color: var(--cream);
+      border: none;
+      border-radius: 3px;
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 15px 24px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .contact-form .form-submit:hover { background: var(--accent-hover); }
+    .contact-form .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .form-status {
+      margin-top: 16px;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      text-align: center;
+      min-height: 1.4em;
+    }
+
+    .form-status.success { color: #7ecba0; }
+    .form-status.error   { color: #e88a7a; }
+
+    .contact-form label .req { color: #E8755A; margin-left: 2px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(245,240,232,0.5);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 40px;
+      font-family: var(--sans);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+    }
+
+    .footer-meta {
+      margin-top: 12px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: rgba(245,240,232,0.4);
+      max-width: 460px;
+    }
+
+    footer a {
+      color: rgba(245,240,232,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--cream); }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-end;
+      padding-top: 4px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      body > nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .container { padding: 0 20px; }
+      section { padding: 64px 0; }
+      .hero { padding: 72px 0 64px; }
+      .hero-cols { grid-template-columns: 1fr; gap: 40px; }
+      .hero-title { margin-bottom: 40px; }
+      .possible-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+      .modes-grid { grid-template-columns: 1fr; gap: 40px; }
+      .cta-section { padding: 72px 20px; }
+      .footer-inner { flex-direction: column; gap: 20px; text-align: left; }
+      .footer-links { align-items: flex-start; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; }
+
+      /* Services table → stacked cards */
+      .services-table thead { display: none; }
+      .services-table tbody tr { display: block; padding: 20px 0; border-bottom: 1px solid var(--rule); }
+      .services-table td { display: block; border-bottom: none; padding: 0; width: auto !important; padding-right: 0 !important; }
+      .services-table td:first-child { margin-bottom: 6px; }
+      .services-table td:last-child { font-size: 14px; }
+
+      /* Why now two-col grid → single column */
+      .why-now-grid { grid-template-columns: 1fr !important; gap: 36px !important; }
+      .why-now-grid img { max-width: 80%; margin: 0 auto; }
+    }
+
+    @media (max-width: 480px) {
+      .possible-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ariadne-logo" viewBox="0 0 1049 177">
+      <path d="M 775.00 101.92 C775.00,163.30 774.90,166.99 773.25,166.83 C772.29,166.74 769.81,166.49 767.75,166.27 L 764.00 165.88 L 764.00 16.00 L 775.50 16.09 L 780.50 22.80 C783.25,26.48 791.73,37.60 799.36,47.50 C806.98,57.40 820.70,75.34 829.86,87.36 C839.01,99.38 849.88,113.62 854.00,118.99 C858.12,124.36 864.20,132.29 867.50,136.62 L 873.50 144.50 L 873.76 80.25 L 874.01 16.00 L 886.00 16.00 L 886.00 166.10 L 880.32 165.80 L 874.64 165.50 L 865.07 152.86 C847.17,129.22 806.74,76.32 787.15,50.92 C781.46,43.54 776.40,37.35 775.90,37.17 C775.37,36.97 775.00,63.57 775.00,101.92 ZM 200.76 96.70 L 200.50 165.50 L 190.00 166.10 L 190.00 16.50 L 215.75 16.75 C229.91,16.89 248.70,17.13 257.50,17.27 L 273.50 17.54 L 281.16 21.27 C298.49,29.72 308.52,49.70 305.08,68.95 C301.82,87.19 289.49,100.74 272.24,105.02 L 267.98 106.08 L 278.07 120.79 C283.62,128.88 292.79,142.02 298.45,150.00 C304.11,157.98 308.55,164.84 308.31,165.25 C308.08,165.66 305.01,166.00 301.50,166.00 L 295.12 166.00 L 291.31 160.49 C289.21,157.46 279.96,144.31 270.75,131.26 C261.54,118.21 254.00,107.14 254.00,106.65 C254.00,106.15 248.31,105.92 241.25,106.13 L 228.50 106.50 L 227.90 95.15 L 248.70 94.82 C268.02,94.52 269.87,94.33 274.71,92.14 C280.84,89.37 288.32,81.79 291.08,75.56 C295.24,66.16 294.51,53.30 289.31,44.31 C286.20,38.94 279.99,33.35 274.12,30.64 C269.73,28.61 267.78,28.49 235.26,28.20 L 201.01 27.90 ZM 666.50 164.51 C660.82,165.52 650.02,165.94 629.25,165.97 L 600.00 166.00 L 600.00 51.00 L 611.00 51.00 L 611.00 154.00 L 630.25 154.24 C655.28,154.54 661.27,154.26 668.39,152.46 C684.14,148.47 698.23,135.43 705.36,118.25 C709.35,108.63 710.46,102.24 710.37,89.50 C710.24,70.34 705.40,57.46 693.28,44.04 C687.36,37.47 675.95,30.95 667.20,29.11 C663.97,28.43 649.79,28.00 630.95,28.00 L 600.00 28.00 L 600.00 15.82 L 632.75 16.25 C669.01,16.73 671.04,17.02 685.00,23.68 C695.82,28.85 708.13,41.38 713.84,53.05 C725.67,77.20 725.50,105.85 713.40,129.03 C703.92,147.17 685.48,161.12 666.50,164.51 ZM 18.60 163.25 C17.25,165.72 16.55,166.00 11.71,166.00 C8.75,166.00 6.06,165.73 5.73,165.39 C5.39,165.06 6.16,162.47 7.43,159.64 C9.89,154.15 43.44,84.59 61.99,46.50 C68.15,33.85 73.89,21.81 74.75,19.75 C76.02,16.68 76.81,16.00 79.10,16.00 C81.63,16.00 82.29,16.81 85.82,24.25 C87.97,28.79 102.45,59.05 117.98,91.50 C151.66,161.84 152.98,164.69 152.24,165.42 C151.12,166.55 141.24,165.99 140.26,164.75 C139.73,164.06 135.13,154.73 130.05,144.00 C107.56,96.48 79.67,39.00 79.11,39.02 C78.77,39.02 74.69,47.01 70.03,56.77 C53.60,91.15 20.09,160.53 18.60,163.25 ZM 434.52 151.75 L 427.66 166.00 L 421.83 166.00 C418.44,166.00 416.00,165.56 416.00,164.95 C416.00,163.80 417.01,161.62 435.98,122.00 C443.22,106.88 457.55,76.82 467.82,55.21 C486.11,16.74 486.56,15.92 489.25,16.21 C491.81,16.48 493.00,18.57 506.11,46.00 C540.24,117.38 562.16,163.57 562.32,164.50 C562.60,166.06 551.51,166.33 550.28,164.80 C549.70,164.08 545.40,155.40 540.71,145.50 C532.21,127.55 527.38,117.48 510.03,81.50 C504.99,71.05 498.36,57.21 495.29,50.75 C492.22,44.29 489.43,39.02 489.10,39.04 C488.77,39.07 483.11,50.43 476.52,64.29 C469.93,78.16 459.32,100.30 452.96,113.50 C446.59,126.70 438.29,143.91 434.52,151.75 ZM 1039.00 155.00 L 1039.00 167.00 L 987.67 167.00 C959.43,167.00 936.03,166.70 935.67,166.33 C935.30,165.97 935.00,131.99 935.00,90.83 L 935.00 16.00 L 947.00 16.00 L 947.00 155.00 ZM 370.00 16.00 L 370.00 166.00 L 359.00 166.00 L 359.00 16.00 ZM 1039.00 16.00 L 1039.00 28.00 L 1004.67 28.00 C985.78,28.00 970.03,27.70 969.67,27.33 C969.30,26.97 969.00,24.27 969.00,21.33 L 969.00 16.00 ZM 1026.08 94.59 C1025.38,95.29 970.38,95.04 969.67,94.33 C969.30,93.97 969.00,91.27 969.00,88.33 L 969.00 83.00 L 1025.81 83.00 L 1026.16 88.59 C1026.35,91.66 1026.31,94.36 1026.08,94.59 Z" fill="currentColor"/>
+      <path d="M 86.03 137.13 C83.69,139.47 82.29,140.00 78.50,140.00 C74.71,140.00 73.31,139.47 70.97,137.13 C67.69,133.85 66.49,130.17 67.44,126.37 C67.81,124.93 69.39,122.45 70.97,120.87 C73.31,118.53 74.71,118.00 78.50,118.00 C82.29,118.00 83.69,118.53 86.03,120.87 C91.16,126.01 91.16,131.99 86.03,137.13 ZM 494.79 138.52 C493.17,139.88 490.64,141.00 489.17,141.00 C485.93,140.99 480.52,137.85 479.06,135.12 C476.65,130.61 478.80,122.25 482.94,120.03 C484.00,119.46 486.73,119.00 489.01,119.00 C492.24,119.00 493.79,119.63 496.03,121.87 C501.31,127.16 500.84,133.43 494.79,138.52 Z" fill="#C84B2F" class="logo-dot"/>
+    </symbol>
+  </svg>
+
+
+  <!-- NAV -->
+  <nav>
+    <a href="#top" class="nav-logo" aria-label="Ariadne"><svg class="logo" viewBox="0 0 1049 177"><use href="#ariadne-logo"></use></svg></a>
+    <ul class="nav-links">
+      <li><a href="#top">What we do</a></li>
+      <li><a href="#how-we-work">How we work</a></li>
+      <li><a href="#who">Who we work with</a></li>
+      <li><a href="#why-now">Why now</a></li>
+      <li><a href="#contact" class="nav-cta">Start a conversation</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <h1 class="hero-title">Put what your organisation knows to <em>work.</em></h1>
+        <div class="hero-cols">
+        <div class="hero-left">
+          <img src="assets/ariadne-hero.webp" alt="" class="hero-art">
+        </div>
+        <div class="hero-right">
+          <p class="hero-sub">Your business knowledge — how you actually do what you do — is one of your most valuable assets. Most companies never treat it like one.</p>
+          <p class="hero-sub">It's scattered across documents, processes, the systems you use, and your people's heads. Some of it never reaches who needs it. Some walks out the door when a key person leaves.</p>
+          <p class="hero-sub">Ariadne turns that knowledge into interactive tools, operational content, and governed assets — so your whole organisation performs like your best people.</p>
+          <a href="#contact" class="btn-primary">Start a discovery conversation</a>
+          <a href="#what-we-build" class="btn-secondary">See what we create</a>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT BECOMES POSSIBLE -->
+  <section>
+    <div class="container">
+      <div class="section-label">What becomes possible</div>
+      <h2 style="font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 400; line-height: 1.2; max-width: 560px;">This is what changes when your knowledge starts working for you.</h2>
+      <div class="possible-grid">
+        <div class="possible-item">
+          <img class="possible-icon" src="assets/self-serve.webp" alt="">
+          <h3>Customers self-serve to the right answer</h3>
+          <p>Interactive tools guide customers to exactly what they need, whenever they need it. Your expertise is in the room even when your people aren't, and your team stops fielding the same questions again and again.</p>
+        </div>
+        <div class="possible-item">
+          <img class="possible-icon" src="assets/bottleneck.webp" alt="">
+          <h3>Your experts stop being the bottleneck</h3>
+          <p>Years of hard-won experience stop living in one or two people's heads. Captured once, it becomes something the whole organisation can draw on, so work no longer stalls every time the person who knows is busy or away.</p>
+        </div>
+        <div class="possible-item">
+          <img class="possible-icon" src="assets/training.webp" alt="">
+          <h3>New people get up to speed fast</h3>
+          <p>Onboarding and training built from how the work is really done, that your teams actually reach for. New people find answers themselves instead of interrupting colleagues, and get productive in a fraction of the usual time.</p>
+        </div>
+        <div class="possible-item">
+          <img class="possible-icon" src="assets/ai-tools.webp" alt="">
+          <h3>The tools your teams create with AI become trustworthy</h3>
+          <p>The tools your people make get reviewed, versioned and governed before anyone depends on them. You get the speed of self-built tools without the risk of unchecked code quietly making decisions across the business.</p>
+        </div>
+        <div class="possible-item">
+          <img class="possible-icon" src="assets/whats-next.webp" alt="">
+          <h3>You're ready for what's coming</h3>
+          <p>Whether it's compliance, audit or the next wave of AI, the groundwork is already in place. Your knowledge is structured, current and traceable, so new demands are something you meet from what you already have, not a scramble from scratch.</p>
+        </div>
+        <div class="possible-item">
+          <img class="possible-icon" src="assets/compounds.webp" alt="">
+          <h3>Your knowledge compounds</h3>
+          <p>Each new asset becomes part of how the business runs and adds to the ones before it. Instead of knowledge leaking away when people leave or documents go stale, what you know keeps accumulating into something more valuable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT WE BUILD -->
+  <section id="what-we-build">
+    <div class="container">
+      <div class="section-label">What we create and manage</div>
+      <h2 style="font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 400; line-height: 1.2; max-width: 560px;">What this looks like in practice.</h2>
+      <table class="services-table">
+        <thead>
+          <tr>
+            <th>Asset / service</th>
+            <th>What it does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Interactive tools</td>
+            <td>Decision guides, configurators and calculators that walk customers to the right answer and qualify them as they go, turning interest into orders without waiting on your team</td>
+          </tr>
+          <tr>
+            <td>Interactive documents</td>
+            <td>Rich, fully interactive documents, from marketing pieces to technical spec sheets, that give each reader the right level of detail and always stay current, so one living asset replaces the folder of out-of-date PDFs</td>
+          </tr>
+          <tr>
+            <td>Operational content</td>
+            <td>Process steps, sequences and checklists delivered at the point of need, so people follow the right procedure and work gets done right the first time</td>
+          </tr>
+          <tr>
+            <td>Support and training</td>
+            <td>Onboarding, reference and troubleshooting your teams actually use, so new people get productive faster and the same questions stop coming back</td>
+          </tr>
+          <tr>
+            <td>Governed self-build</td>
+            <td>We review, version and host the tools your own team creates with AI, so what they make is safe, controlled and ready to rely on in production</td>
+          </tr>
+          <tr>
+            <td>Knowledge estate audit</td>
+            <td>A clear picture of what you already have, what's working, what's fragile and what's missing, so you know exactly where you stand and what to fix first</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="services-note">Each asset is self-contained, version controlled, and yours. No per-user fees, no lock-in. Opt for fully managed, with access controls, data capture and analytics built in, or self-host for those that need it. Together they become part of how your business runs, a foundation you can keep adding to.</p>
+    </div>
+  </section>
+
+  <!-- HOW WE WORK -->
+  <section id="how-we-work">
+    <div class="container">
+      <div class="section-label">How we work with you</div>
+      <h2 style="font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 400; line-height: 1.2; max-width: 560px;">Three ways to work together. Start wherever you are.</h2>
+      <div class="modes-grid">
+        <div class="mode-item">
+          <img class="mode-icon" src="assets/self-build.webp" alt="">
+          <div class="mode-num">01 — Self-build</div>
+          <h3>You create, we govern</h3>
+          <p>Start with our open frameworks and templates and create your own assets with the AI tools you already use. We operationalise them so they're safe, controlled and governed.</p>
+        </div>
+        <div class="mode-item">
+          <img class="mode-icon" src="assets/we-create.webp" alt="">
+          <div class="mode-num">02 — We create it</div>
+          <h3>We create and embed</h3>
+          <p>When it's more complex, or beyond what self-build can cover, we create or refine your assets, govern them, and embed them in how your teams work. Scoped and priced upfront.</p>
+        </div>
+        <div class="mode-item">
+          <img class="mode-icon" src="assets/estate-management.webp" alt="">
+          <div class="mode-num">03 — Estate management</div>
+          <h3>Value that compounds</h3>
+          <p>As your portfolio grows, we keep it current, reviewed and coherent. The ongoing relationship where knowledge — and its value — keeps growing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO WE WORK WITH -->
+  <section id="who" class="who-section">
+    <div class="container">
+      <div class="section-label">Who we work with</div>
+      <details class="who-disclosure">
+        <summary>
+          <span class="who-summary-text">B2B and industrial organisations whose success depends on getting the right knowledge to the right person at the right moment.</span>
+          <span class="who-toggle" aria-hidden="true"></span>
+        </summary>
+        <div class="who-detail">
+          <p>Manufacturers, technical and professional services, and similar sectors where complexity is high and the cost of getting things wrong is real.</p>
+          <p>We're a particularly good fit where expertise is concentrated in a few people, where internal teams are creating AI-assisted tools without a governance layer, or where knowledge needs to outlast any individual.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- WHY NOW -->
+  <section id="why-now">
+    <div class="container">
+      <div class="section-label">Why now</div>
+      <h2 style="font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 400; line-height: 1.2; max-width: 560px;">More powerful than most people realise, and more within reach than ever.</h2>
+      <div class="why-now-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-top: 24px;">
+        <div>
+          <p style="color: var(--ink-light); margin-bottom: 20px; line-height: 1.7;">Used well, this technology is powerful, and we've spent years seeing how far it goes. Most organisations aim too low. Done well, it doesn't just speed up what you already do, it changes what your business is capable of.</p>
+          <p style="color: var(--ink-light); margin-bottom: 20px; line-height: 1.7;">Not long ago this needed specialist teams, long timelines and real budget. AI has changed that. It's now feasible for your own people to start creating tools themselves, close to the work and the problems they understand best.</p>
+          <p style="color: var(--ink-light); margin-bottom: 20px; line-height: 1.7;">It also carries risk. Tools multiply across teams with no version control and no clear sense of which one is current or correct. It's easy to create something that works without realising what you've taken on: the moment a tool touches real data, it carries obligations around security, privacy and compliance, and you become accountable for code you may not fully understand.</p>
+          <p style="color: var(--ink-light); line-height: 1.7;">Ariadne is the layer that lets you move fast and stay in control: the structure, review and governance that turn AI-assisted tools from a liability into infrastructure you can rely on.</p>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <img src="assets/the-estate.webp" alt="" style="max-width: 100%; mix-blend-mode: multiply;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / CONTACT -->
+  <section class="cta-section" id="contact">
+    <h2>Let's see what your knowledge could <em>do.</em></h2>
+    <p>Start a discovery conversation, or explore our open resources and make a start yourself.</p>
+    <a href="#contact-form" class="btn-primary">Start a discovery conversation</a>
+    <a href="#" class="btn-secondary">Explore open resources</a>
+
+    <form class="contact-form" id="contact-form" novalidate>
+      <h3>Send us a message</h3>
+      <div class="form-row">
+        <div class="form-field">
+          <label for="cf-name">Your name<span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="cf-name" name="name" autocomplete="name" required>
+        </div>
+        <div class="form-field">
+          <label for="cf-company">Company<span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="cf-company" name="company" autocomplete="organization" required>
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="cf-email">Work email<span class="req" aria-hidden="true">*</span></label>
+        <input type="email" id="cf-email" name="email" autocomplete="work email" required>
+      </div>
+      <div class="form-field">
+        <label for="cf-message">Message<span class="req" aria-hidden="true">*</span></label>
+        <textarea id="cf-message" name="message" placeholder="Tell us about key challenges you want to resolve" required></textarea>
+      </div>
+      <!-- Turnstile widget — replace data-sitekey with your actual site key -->
+      <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="dark"></div>
+      <button type="submit" class="form-submit" disabled>Send message</button>
+      <p class="form-status" id="form-status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script>
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
+    const btn = form.querySelector('.form-submit');
+    const requiredFields = form.querySelectorAll('[required]');
+
+    // Turnstile calls this when the user completes the challenge
+    function onTurnstileSuccess() { checkValidity(); }
+    function onTurnstileExpired()  { checkValidity(); }
+
+    function checkValidity() {
+      const fieldsOk = [...requiredFields].every(el => el.value.trim() !== '');
+      const tsToken  = form.querySelector('[name="cf-turnstile-response"]');
+      const tsOk     = tsToken && tsToken.value !== '';
+      btn.disabled   = !(fieldsOk && tsOk);
+    }
+
+    requiredFields.forEach(el => el.addEventListener('input', checkValidity));
+
+    // Poll for Turnstile token appearance (it injects a hidden input)
+    const tsObserver = new MutationObserver(checkValidity);
+    tsObserver.observe(form, { subtree: true, attributes: true, attributeFilter: ['value'], childList: true });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      status.textContent = '';
+      status.className = 'form-status';
+
+      const data = new FormData(form);
+
+      try {
+        const res = await fetch('/contact', { method: 'POST', body: data });
+        const json = await res.json();
+
+        if (json.ok) {
+          status.textContent = json.message;
+          status.classList.add('success');
+          form.reset();
+          if (window.turnstile) turnstile.reset();
+          checkValidity();
+        } else {
+          status.textContent = json.error || 'Something went wrong. Please try again.';
+          status.classList.add('error');
+          if (window.turnstile) turnstile.reset();
+          checkValidity();
+        }
+      } catch {
+        status.textContent = 'Network error — please try again.';
+        status.classList.add('error');
+        if (window.turnstile) turnstile.reset();
+        checkValidity();
+      }
+    });
+  </script>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <svg class="logo footer-logo" viewBox="0 0 1049 177" role="img" aria-label="Ariadne"><use href="#ariadne-logo"></use></svg>
+        <span>© 2026 Ariadne Knowledge Works Ltd.</span>
+        <p class="footer-meta">Ariadne Knowledge Works Ltd. Registered in England &amp; Wales, company no. 17154391.<br>Registered office: 10 Scandia-Hus Business Park, Felcourt Road, East Grinstead, Surrey, England, RH19 2LP.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#top">What we do</a>
+        <a href="#how-we-work">How we work</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+name = "ariadne-works-website"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+
+[assets]
+directory = "."
+binding = "ASSETS"
+
+[vars]
+TO_EMAIL = "mike@ariadneworks.com"
+
+# Secrets (set via `wrangler secret put` or GitHub Actions):
+#   TURNSTILE_SECRET_KEY  — from Cloudflare Turnstile dashboard
+#   TURNSTILE_SITE_KEY    — stored here as a var once you have it (not sensitive)
