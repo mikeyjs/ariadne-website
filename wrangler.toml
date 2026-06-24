@@ -3,11 +3,15 @@ main = "src/index.js"
 compatibility_date = "2024-09-23"
 
 [assets]
-directory = "."
+directory = "./assets"
 binding = "ASSETS"
 
 [vars]
 TO_EMAIL = "mike@ariadneworks.com"
+
+[[send_email]]
+name = "SEND_EMAIL"
+destination_address = "mike@ariadneworks.com"
 
 # Secrets (set via `wrangler secret put` or GitHub Actions):
 #   TURNSTILE_SECRET_KEY  — from Cloudflare Turnstile dashboard

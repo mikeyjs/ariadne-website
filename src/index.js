@@ -2,9 +2,11 @@
  * Ariadne Works — Cloudflare Worker
  *
  * Routes:
- *   POST /contact  — verify Turnstile, forward form data via email
+ *   POST /contact  — verify Turnstile, forward form data via Cloudflare Email
  *   *              — serve static assets from the project directory
  */
+
+import { EmailMessage } from "cloudflare:email";
 
 export default {
   async fetch(request, env) {
@@ -43,23 +45,17 @@ async function handleContact(request, env) {
     return jsonResponse({ ok: false, error: "Captcha verification failed. Please try again." }, 403);
   }
 
-  // ── Send email via MailChannels ───────────────────────────────────────────
-  const emailRes = await sendEmail({
-    to:      env.TO_EMAIL || "mike@ariadneworks.com",
-    from:    "noreply@ariadneworks.com",
-    replyTo: email,
-    subject: `New enquiry from ${name} (${company})`,
-    text: `Name: ${name}\nCompany: ${company}\nEmail: ${email}\n\n${message}`,
-    html: `<p><strong>Name:</strong> ${escHtml(name)}</p>
-<p><strong>Company:</strong> ${escHtml(company)}</p>
-<p><strong>Email:</strong> ${escHtml(email)}</p>
-<hr/>
-<p>${escHtml(message).replace(/\n/g, "<br>")}</p>`,
-  });
-
-  if (!emailRes.ok) {
-    const detail = await emailRes.text();
-    console.error("MailChannels error:", emailRes.status, detail);
+  // ── Send email via Cloudflare Email Workers ───────────────────────────────
+  try {
+    await sendEmail(env.SEND_EMAIL, {
+      from:    "noreply@ariadneworks.com",
+      to:      env.TO_EMAIL || "mike@ariadneworks.com",
+      replyTo: email,
+      subject: `New enquiry from ${name} (${company})`,
+      text:    `Name: ${name}\nCompany: ${company}\nEmail: ${email}\n\n${message}`,
+    });
+  } catch (err) {
+    console.error("Email send error:", err);
     return jsonResponse({ ok: false, error: "Failed to send message. Please try again later." }, 502);
   }
 
@@ -78,21 +74,28 @@ async function verifyTurnstile(token, secret, request) {
   return res.json();
 }
 
-async function sendEmail({ to, from, replyTo, subject, text, html }) {
-  return fetch("https://api.mailchannels.net/tx/v1/send", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      personalizations: [{ to: [{ email: to }] }],
-      from: { email: from, name: "Ariadne Works" },
-      reply_to: { email: replyTo },
-      subject,
-      content: [
-        { type: "text/plain", value: text },
-        { type: "text/html",  value: html },
-      ],
-    }),
+async function sendEmail(binding, { from, to, replyTo, subject, text }) {
+  const mime = [
+    `From: Ariadne Works <${from}>`,
+    `To: ${to}`,
+    `Reply-To: ${replyTo}`,
+    `Subject: ${subject}`,
+    `MIME-Version: 1.0`,
+    `Content-Type: text/plain; charset=utf-8`,
+    ``,
+    text,
+  ].join("\r\n");
+
+  const encoded = new TextEncoder().encode(mime);
+  const stream  = new ReadableStream({
+    start(controller) {
+      controller.enqueue(encoded);
+      controller.close();
+    },
   });
+
+  const msg = new EmailMessage(from, to, stream);
+  await binding.send(msg);
 }
 
 function jsonResponse(data, status = 200) {
